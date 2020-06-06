@@ -1,0 +1,2 @@
+include kema/templates/*.tmpl.*
+include kema/*.ini
