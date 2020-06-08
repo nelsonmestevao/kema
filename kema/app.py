@@ -3,7 +3,7 @@
 """Kema.
 
 Usage:
-  kema new <name>...
+  kema (new | n) <name>...
   kema (-h | --help)
   kema --version
 
@@ -56,7 +56,7 @@ def main():
     template_header = Template(open(get_template("header.tmpl.h")).read())
     template_source = Template(open(get_template("source.tmpl.c")).read())
 
-    if arguments["new"]:
+    if arguments["new"] or arguments["n"]:
         os.makedirs(config["headers"]["dir"])
         os.makedirs(config["source"]["dir"])
 
@@ -69,5 +69,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print(os.path.abspath(os.path.dirname(__file__)))
     main()
