@@ -17,9 +17,9 @@ setuptools.setup(
     url="https://github.com/nelsonmestevao/kema",
     packages=setuptools.find_packages(),
     data_files=[
-        (config_path, ["kema/kema.ini"]),
+        (config_path, ["data/kema.ini"]),
         (os.path.join(config_path, "templates"),
-         ["kema/templates/header.tmpl.h", "kema/templates/source.tmpl.c"]),
+         ["data/templates/header.tmpl.h", "data/templates/source.tmpl.c"]),
     ],
     install_requires=["docopt==0.6.2"],
     entry_points={"console_scripts": ["kema = kema.app:main"]},
