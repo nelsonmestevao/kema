@@ -3,7 +3,7 @@
 """Kema.
 
 Usage:
-  kema [options] (new | n) <name>...
+  kema [options] (generate | gen | g) <name>...
   kema (-h | --help)
   kema --version
 
@@ -70,7 +70,7 @@ def main():
     template_source = Template(
         open(get_template(config["C.source"]["template"])).read())
 
-    if arguments["new"] or arguments["n"]:
+    if arguments["generate"] or arguments["gen"] or arguments["g"]:
         os.makedirs(config["C.headers"]["dir"], exist_ok=True)
         os.makedirs(config["C.source"]["dir"], exist_ok=True)
 
