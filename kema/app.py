@@ -3,13 +3,16 @@
 """Kema.
 
 Usage:
-  kema (new | n) <name>...
+  kema [options] (new | n) <name>...
   kema (-h | --help)
   kema --version
 
 Options:
-  -h --help     Show this screen.
-  --version     Show version.
+  -h --help         Show this screen.
+  -v --version      Show version.
+  -l --lang=<lang>  Choose programming language [default: C].
+  -d --debug        Run in debug mode for developting purposes.
+
 """
 from string import Template
 import configparser
@@ -19,11 +22,16 @@ from docopt import docopt
 
 from kema import VERSION
 
+DEBUG = False
+
 
 def get_config_path():
     """TODO
     :returns: TODO
     """
+    if DEBUG:
+        return "data"
+
     home_path = os.path.expanduser("~")
     return os.path.join(home_path, ".config", "kema")
 
@@ -50,23 +58,33 @@ def main():
     """
     arguments = docopt(__doc__, version=f"Kema {VERSION}")
 
+    if DEBUG:
+        print("ARGV:", arguments)
+
     config = configparser.ConfigParser()
     config.read(get_config())
 
-    template_header = Template(open(get_template("header.tmpl.h")).read())
-    template_source = Template(open(get_template("source.tmpl.c")).read())
+    template_header = Template(
+        open(get_template(config["C.headers"]["template"])).read())
+
+    template_source = Template(
+        open(get_template(config["C.source"]["template"])).read())
 
     if arguments["new"] or arguments["n"]:
-        os.makedirs(config["headers"]["dir"])
-        os.makedirs(config["source"]["dir"])
+        os.makedirs(config["C.headers"]["dir"], exist_ok=True)
+        os.makedirs(config["C.source"]["dir"], exist_ok=True)
+
+        if not arguments["--lang"] == "C":
+            return
 
         for module in arguments["<name>"]:
-            with open(f'{config["headers"]["dir"]}/{module}.h', "w") as out:
+            with open(f'{config["C.headers"]["dir"]}/{module}.h', "w") as out:
                 out.write(template_header.substitute(module=module.upper()))
 
-            with open(f'{config["source"]["dir"]}/{module}.c', "w") as out:
+            with open(f'{config["C.source"]["dir"]}/{module}.c', "w") as out:
                 out.write(template_source.substitute(module=module))
 
 
 if __name__ == "__main__":
+    DEBUG = docopt(__doc__, version=f"Kema {VERSION}")["--debug"]
     main()
