@@ -18,14 +18,14 @@ from string import Template
 import configparser
 import os
 
-from docopt import docopt
+from docopt import docopt  # type: ignore
 
 from kema import VERSION
 
 DEBUG = False
 
 
-def get_config_path():
+def get_config_path() -> str:
     """TODO
     :returns: TODO
     """
@@ -36,7 +36,7 @@ def get_config_path():
     return os.path.join(home_path, ".config", "kema")
 
 
-def get_config():
+def get_config() -> str:
     """TODO: Docstring for get_config.
     :returns: TODO
 
@@ -44,7 +44,7 @@ def get_config():
     return os.path.join(get_config_path(), "kema.ini")
 
 
-def get_template(template):
+def get_template(template: str) -> str:
     """TODO
     :returns: TODO
     """

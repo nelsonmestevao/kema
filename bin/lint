@@ -4,4 +4,4 @@ source .venv/bin/activate
 
 flake8 kema/*.py
 pylint kema/*.py
-
+mypy kema/*.py
