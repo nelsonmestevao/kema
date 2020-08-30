@@ -6,7 +6,7 @@ echo_info "clean" "Removing distribution files..."
 rm dist/*
 
 echo_info "publish" "Packaging the project for publishing..."
-python setup.py sdist
+python setup.py sdist bdist_wheel
 
 echo_info "publish" "Uploading the project to PyPI..."
 twine upload dist/*
