@@ -70,7 +70,13 @@ def main():
     template_source = Template(
         open(get_template(config["C.source"]["template"])).read())
 
-    if arguments["generate"] or arguments["gen"] or arguments["g"]:
+    gen_conditions = [
+        arguments["generate"],
+        arguments["gen"],
+        arguments["g"]
+    ]
+
+    if any(gen_conditions):
         os.makedirs(config["C.headers"]["dir"], exist_ok=True)
         os.makedirs(config["C.source"]["dir"], exist_ok=True)
 
