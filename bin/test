@@ -2,5 +2,4 @@
 
 source .venv/bin/activate
 
-python -m doctest --verbose kema/*.py
-
+python3 -m doctest --verbose kema/*.py
