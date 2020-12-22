@@ -1,13 +1,31 @@
 #!/usr/bin/env bash
 
+set -e
 source .venv/bin/activate
 
+. scripts/helpers.sh
+
+if [[ $(git branch --show-current) != 'master' ]]; then
+    echo_error "You're trying to release from Git branch $(git branch --show-current) instead of master. To prevent releases from unstable branches, releases are only allowed from master."
+  exit 1
+fi
+
+if [[ $(git status -s) ]]; then
+    echo_error "There are some uncommitted changes in this repository. This might introduce unwanted artifacts in the release. Please stash or commit your changes prior to cooking a new release."
+  exit 2
+fi
+
 echo_info "clean" "Removing distribution files..."
-rm dist/*
+rm -rvf dist/*
 
 echo_info "publish" "Packaging the project for publishing..."
-python3 setup.py sdist bdist_wheel
+python3 setup.py sdist
 
 echo_info "publish" "Uploading the project to PyPI..."
 twine upload dist/*
+
+echo_info "publish" "Uploading tags to git origin..."
+CURRENT_VERSION=$(grep 'VERSION' kema/__init__.py | cut -d'=' -f 2 |  tr -d " " | tr -d '"')
+git tag "v${CURRENT_VERSION}"
+git push --tags
 

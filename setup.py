@@ -12,7 +12,7 @@ setuptools.setup(
     name="kema",
     version=VERSION,
     author="Nelson Estevão",
-    author_email="hello@estevao.xyz",
+    author_email="hello@estevao.org",
     description="A small package to help setting up projects",
     url="https://github.com/nelsonmestevao/kema",
     packages=setuptools.find_packages(),

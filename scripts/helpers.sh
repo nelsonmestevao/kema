@@ -64,11 +64,28 @@ function echo_done() {
 }
 
 function echo_info() {
+  if [ "$#" -eq 1 ]; then
+    PREFIX="INFO"
+  else
+    PREFIX=$1
+    shift 1
+  fi
+
   colorize cyan bold
-  echo "INFO:$(colorize reset)" "$@"
+  echo "${PREFIX}:$(colorize reset)" "$@"
 }
 
 function not_installed() {
   [ ! -x "$(command -v "$@")" ]
 }
 
+function load_env() {
+  ENV_FILE=${1:-.env}
+  set -a
+  if [ -f "$ENV_FILE" ]; then
+    source "$ENV_FILE"
+  else
+    echo_error "Couldn't locate ${ENV_FILE} file..."
+  fi
+  set +a
+}
