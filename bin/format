@@ -1,6 +1,62 @@
 #!/usr/bin/env bash
 
+set -Eeuo pipefail
+
+BASE_DIR=$(dirname "${BASH_SOURCE[0]:-$0}")
+cd "${BASE_DIR}/.." || exit 127
+
+# shellcheck source=../scripts/helpers.sh
+. scripts/helpers.sh
+
+PROGRAM=$(basename "$0")
+VERSION=0.2.2
+
+function display_help() {
+  cat <<EOF
+  $(help_section Usage)
+    ${PROGRAM} [options] [<command>]
+
+  $(help_section Commands)
+    python   <- default value
+    shell
+
+  $(help_section Options)
+    -h --help         Show this screen.
+    -v --version      Show version.
+EOF
+}
+
+function format() {
+  case $1 in
+    shell)
+      log_info "${FUNCNAME[0]} ${1} scripts"
+      shfmt -i 2 -ci -s -w -f .
+      ;;
+    python)
+      log_info "${FUNCNAME[0]} ${1} scripts"
+      yapf -vv -i -r kema/
+      ;;
+  esac
+  log_success "${FUNCNAME[0]} ${1} scripts"
+}
+
 source .venv/bin/activate
 
-yapf -vv -i -r kema/
-
+case ${1:-python} in
+  -h | --help)
+    display_help
+    ;;
+  -v | --version)
+    display_version ${PROGRAM} ${VERSION}
+    ;;
+  shell | bash | sh)
+    format shell
+    ;;
+  python)
+    format python
+    ;;
+  *)
+    display_help >&2
+    exit 1
+    ;;
+esac

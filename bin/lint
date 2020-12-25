@@ -1,7 +1,64 @@
 #!/usr/bin/env bash
 
+set -Eeuo pipefail
+
+BASE_DIR=$(dirname "${BASH_SOURCE[0]:-$0}")
+cd "${BASE_DIR}/.." || exit 127
+
+# shellcheck source=../scripts/helpers.sh
+. scripts/helpers.sh
+
+PROGRAM=$(basename "$0")
+VERSION=0.2.2
+
+function display_help() {
+  cat <<EOF
+  $(help_section Usage)
+    ${PROGRAM} [options] [<command>]
+
+  $(help_section Commands)
+    python   <- default value
+    shell
+
+  $(help_section Options)
+    -h --help         Show this screen.
+    -v --version      Show version.
+EOF
+}
+
+function lint() {
+  case $1 in
+    shell)
+      log_info "${FUNCNAME[0]} ${1} scripts"
+      shellcheck scripts/*.sh
+      ;;
+    python)
+      log_info "${FUNCNAME[0]} ${1} files"
+      flake8 kema/*.py
+      pylint kema/*.py
+      mypy kema/*.py
+      ;;
+  esac
+  log_success "${FUNCNAME[0]} ${1} scripts"
+}
+
 source .venv/bin/activate
 
-flake8 kema/*.py
-pylint kema/*.py
-mypy kema/*.py
+case ${1:-python} in
+  -h | --help)
+    display_help
+    ;;
+  -v | --version)
+    display_version ${PROGRAM} ${VERSION}
+    ;;
+  shell | bash | sh)
+    lint shell
+    ;;
+  python)
+    lint python
+    ;;
+  *)
+    display_help >&2
+    exit 1
+    ;;
+esac
