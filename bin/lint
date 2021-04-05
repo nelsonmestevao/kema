@@ -5,11 +5,13 @@ set -Eeuo pipefail
 BASE_DIR=$(dirname "${BASH_SOURCE[0]:-$0}")
 cd "${BASE_DIR}/.." || exit 127
 
-# shellcheck source=../scripts/helpers.sh
-. scripts/helpers.sh
+# shellcheck source=scripts/logging.sh
+. scripts/logging.sh
+# shellcheck source=scripts/utils.sh
+. scripts/utils.sh
 
 PROGRAM=$(basename "$0")
-VERSION=0.2.2
+VERSION=0.5.3
 
 function display_help() {
   cat <<EOF
@@ -17,7 +19,7 @@ function display_help() {
     ${PROGRAM} [options] [<command>]
 
   $(help_section Commands)
-    python   <- default value
+    go       <- default value
     shell
 
   $(help_section Options)
@@ -32,30 +34,23 @@ function lint() {
       log_info "${FUNCNAME[0]} ${1} scripts"
       shellcheck scripts/*.sh
       ;;
-    python)
+    go)
       log_info "${FUNCNAME[0]} ${1} files"
-      flake8 kema/*.py
-      pylint kema/*.py
-      mypy kema/*.py
+      golint ./...
       ;;
   esac
   log_success "${FUNCNAME[0]} ${1} scripts"
 }
 
-source .venv/bin/activate
-
-case ${1:-python} in
+case ${1:-go} in
   -h | --help)
     display_help
     ;;
   -v | --version)
-    display_version ${PROGRAM} ${VERSION}
+    display_version "${PROGRAM}" "${VERSION}"
     ;;
-  shell | bash | sh)
-    lint shell
-    ;;
-  python)
-    lint python
+  shell | go)
+    lint "${1:-go}"
     ;;
   *)
     display_help >&2

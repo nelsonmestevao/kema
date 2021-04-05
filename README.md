@@ -1,3 +1,6 @@
+[code_of_conduct]: CODE_OF_CONDUCT.md
+[license]: LICENSE.txt
+
 # kema
 > :wrench: A tool for helping setting up projects
 
@@ -10,14 +13,14 @@ local machine for development and testing purposes.
 
 The following software is required to be installed on your system:
 
-- [Python](https://www.python.org/downloads/)
+- [go 1.16+](https://golang.org/dl/)
 
 ### :package: Installation
 
 You can install the program in your computer for your own use.
 
 ```
-pip install kema
+go get -u github.com/nelsonmestevao/kema
 ```
 
 ### :video_game: Usage
@@ -29,7 +32,7 @@ After you have installed the program you can run it from everywhere. Just run
 kema generate <module_name>
 ```
 
-Use `--help` for more help on usage.
+Use `--help` for more usage information.
 
 ### :hammer: Development
 
@@ -51,15 +54,43 @@ Format the code accordingly to common guide lines.
 bin/format
 ```
 
-Lint your python code.
+Lint your go code.
 
 ```
 bin/lint
 ```
 
-Publish the application to [PyPI](https://pypi.org/project/kema/).
+## :handshake: Contributing
 
-```
-bin/publish
-```
+When contributing to this repository, please first discuss the change you wish
+to make via issue, email, or any other method with the owners of this
+repository before making a change.
 
+Please note we have a [Code of Conduct][code_of_conduct], please follow it
+in all your interactions with the project.
+
+### :twisted_rightwards_arrows: Pull Request Process
+
+1. It is advised to create a Pull Request if you are stuck (so others can help
+   you) or when your feature is complete and tested.
+2. To be merged, your Pull Request must have a passing build on the Continuous
+   Integration server (not applicable now).
+3. To be merged, your Pull Request should add relevant tests (when applicable).
+4. You may merge the Pull Request in once you have the sign-off of one other
+   developer, or if you do not have permission to do that, you may request the
+   reviewer to merge it for you. If you do have merging permissions on the
+   repository, you must rebase and squash your Pull Request into a single
+   commit.
+
+### :link: References
+
+You can use these resources to learn more about the technologies this project
+uses.
+
+- [Getting Started with Go](https://learn.go.dev/)
+- [Golang Documentation](https://golang.org/doc/)
+
+## :memo: License
+
+This project is licensed under the MIT License - see the [LICENSE][license]
+file for details.

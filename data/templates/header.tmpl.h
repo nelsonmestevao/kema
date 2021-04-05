@@ -1,5 +1,5 @@
-#ifndef __${module}_H__
-#define __${module}_H__
+#ifndef __{{ .Name }}_H__
+#define __{{ .Name }}_H__
 
 
 

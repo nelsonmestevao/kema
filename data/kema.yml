@@ -1,0 +1,8 @@
+languages:
+  - name: C
+    headers:
+      dir: includes
+      template: header.tmpl.h
+    source:
+      dir: src
+      template: source.tmpl.h
