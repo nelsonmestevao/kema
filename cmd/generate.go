@@ -28,16 +28,17 @@ func check(err error) {
 	}
 }
 
-type module struct {
+type Module struct {
 	Name string
 }
 
 var generateCmd = &cobra.Command{
-	Use:     "generate",
+	Use:     "generate <module name>",
 	Short:   "Generate a new module",
 	Aliases: []string{"gen", "g"},
+    Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		module := module{Name: "cena"}
+		module := Module{Name: args[0]}
 
 		headerTemplate, err := template.ParseFiles("data/templates/header.tmpl.h")
 
